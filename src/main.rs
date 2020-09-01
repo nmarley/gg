@@ -1,36 +1,28 @@
-use rand::Rng;
-use std::cmp::Ordering;
-use std::io;
+use std::cmp::PartialOrd;
 
 fn main() {
-    println!("Guess the number!");
+    let nums = vec![34, 50, 25, 100, 65];
+    let result = largest(&nums);
+    println!("The largest number is {}", result);
 
-    let secret_number = rand::thread_rng().gen_range(1, 101);
+    let chars = vec!['y', 'm', 'c', 'a'];
+    let result = largest(&chars);
+    println!("The largest char is {}", result);
 
-    println!("The secret number is {}", secret_number);
+    let strs = vec![String::from("hello"), String::from("world")];
+    println!("strs[0] = {}", strs[0]);
+    // let result = largest(&strs);
+    // println!("The largest str is {}", result);
+}
 
-    loop {
-        println!("Please input your guess.");
+fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
+    let mut largest = list[0];
 
-        let mut guess = String::new();
-
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
-
-        let guess: u32 = match guess.trim().parse() {
-            Ok(num) => num,
-            Err(_) => continue,
-        };
-
-        println!("You guessed {}", guess);
-        match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
-            Ordering::Equal => {
-                println!("You win!");
-                break;
-            }
+    for &item in list {
+        if item > largest {
+            largest = item;
         }
     }
+
+    largest
 }

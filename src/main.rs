@@ -1,1 +1,3 @@
-fn main() {}
+fn main() {
+    let c = gg::Counter::new();
+}

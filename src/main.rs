@@ -1,14 +1,14 @@
+use std::sync::mpsc;
 use std::thread;
 
 fn main() {
-    let v = vec![1, 2, 3];
+    let (tx, rx) = mpsc::channel();
 
-    let handle = thread::spawn(move || {
-        println!("Here's a vector from spawned: {:?}", v);
+    thread::spawn(move || {
+        let val = String::from("hi");
+        tx.send(val).unwrap();
     });
 
-    // can't borrow moved value
-    // println!("Here's a vector from main: {:?}", v);
-
-    handle.join().unwrap();
+    let received = rx.recv().unwrap();
+    println!("Got: {}", received);
 }
